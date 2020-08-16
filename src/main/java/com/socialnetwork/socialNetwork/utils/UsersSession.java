@@ -54,7 +54,7 @@ public class UsersSession {
         return finalToken;
     }
     
-    public static String generateTokenSession() {
+    private static String generateTokenSession() {
         String finalToken = "";
         Random random = new Random();
         for(int i = 0; i < tokenSessionLength; i++) {
@@ -63,17 +63,22 @@ public class UsersSession {
         return finalToken;
     }
     
-    public static void newSession(Users user) {
+    public static String newSession(Users user) {
         SessionInformation sessionInformation = new SessionInformation();
         sessionInformation.setUser(user.getUser());
         sessionInformation.setPassword(user.getPassword());
-        sessionInformation.setTokenSession(generateTokenSession());
+        String tokenSession = generateTokenSession();
+        sessionInformation.setTokenSession(tokenSession);
         userSession.add(sessionInformation);
+        System.out.println("New session: "+sessionInformation.getUser()+" token: "+tokenSession);
+        return sessionInformation.getTokenSession();
     }
     
     public static boolean validateSession(Users user, String tokenSession) {
         for(int i = 0; i < userSession.size(); i++) {
-            if(userSession.get(i).getTokenSession().equals(tokenSession) && userSession.get(i).getUser().equals(user.getUser())) return true; 
+            if(userSession.get(i).getTokenSession().equals(tokenSession) && 
+                    userSession.get(i).getUser().equals(user.getUser()) &&
+                    userSession.get(i).getPassword().equals(user.getPassword())) return true; 
         }
         return false;
     }
@@ -94,7 +99,9 @@ public class UsersSession {
         }
     }
     
-    public static ArrayList<SessionInformation> returnAllSession() {
-        return userSession;
+    public static void printAllSession() {
+        for(int i = 0; i < userSession.size(); i++) {
+            System.out.println("User session "+userSession.get(i).getUser()+" token: "+userSession.get(i).getTokenSession());
+        }
     }
 }

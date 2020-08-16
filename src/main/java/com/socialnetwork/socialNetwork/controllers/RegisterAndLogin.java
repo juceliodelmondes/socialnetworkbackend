@@ -171,25 +171,27 @@ public class RegisterAndLogin {
         ReturnInformationLogin returnInformation = new ReturnInformationLogin();
         try {
             if(verifyName(information.getUser()) && verifyPassword(information.getPassword())) {
+                System.out.println("pesquisando user: "+information.getUser());
                 Users userResult = repo.findByUser(information.getUser());
                 if(userResult != null) { //user exists
                     if(userResult.getPassword().equals(information.getPassword())) {
                         returnInformation.setMessage("Logado com sucesso!");
                         returnInformation.setSuccess(true);
+                        returnInformation.setToken(UsersSession.newSession(userResult));
                     } else {
-                        returnInformation.setMessage("Verifique as informações!");
+                        returnInformation.setMessage("Verifique as informações!1");
                         returnInformation.setSuccess(false);
                     }
                 } else {
-                    returnInformation.setMessage("Verifique as informações!");
+                    returnInformation.setMessage("Verifique as informações!2");
                     returnInformation.setSuccess(false);
                 }
             } else {
-                returnInformation.setMessage("Verifique as informações!");
+                returnInformation.setMessage("Verifique as informações!3");
                 returnInformation.setSuccess(false);
             }
         } catch(Exception er) {
-            returnInformation.setMessage("Verifique as informações!");
+            returnInformation.setMessage("Verifique as informações!4");
             returnInformation.setSuccess(false);
         } 
         return returnInformation;
