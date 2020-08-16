@@ -5,6 +5,7 @@
  */
 package com.socialnetwork.socialNetwork.controllers;
 
+import com.socialnetwork.socialNetwork.SocialNetworkConfiguration;
 import com.socialnetwork.socialNetwork.models.Users;
 import com.socialnetwork.socialNetwork.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Jucelio
  */
+@CrossOrigin //allow cors
 @RestController
 public class RegisterAndLogin {
     @Autowired
@@ -80,7 +82,7 @@ public class RegisterAndLogin {
     public ReturnInformation register(@RequestBody RegisterInformation information) {
         ReturnInformation returnInformation = new ReturnInformation();
         try {
-            if(!information.getUser().isEmpty() && !information.getPassword().isEmpty()) { //trocar por um filtro
+            if(verifyName(information.getUser())) { //trocar por um filtro
                 boolean userExists = userExists(information.getUser());
                 if(userExists) {
                     //If user exists
@@ -101,7 +103,7 @@ public class RegisterAndLogin {
                     }
                 }
             } else {
-                returnInformation.setMessage("Verifique o usuário e senha!");
+                returnInformation.setMessage("Verifique o nome de usuário!");
                 returnInformation.setSuccess(false);
             }
         } catch(Exception er) {
@@ -118,11 +120,23 @@ public class RegisterAndLogin {
     
     private boolean verifyName(String userNameParams) {
         //Verify all strings, range [a-z, 0-9], string length max: 60
-        return true;
+        if(!userNameParams.isEmpty() && userNameParams.length() >= SocialNetworkConfiguration.minUserName && userNameParams.length() <= SocialNetworkConfiguration.maxUserName) {
+            for(int i = 0; i < userNameParams.length(); i++) {
+                String charS = userNameParams.charAt(i)+"";
+                String charAllowedString = SocialNetworkConfiguration.charAllowed;
+                for(int j = 0; j < charAllowedString.length(); j++) {
+                    String charAllowed = charAllowedString.charAt(j)+"";
+                    if(charS.compareToIgnoreCase(charAllowed) == 0) { //if equals 
+                        break;
+                    } else if(j == charAllowedString.length()-1) return false;
+                }
+            }
+            return true;
+        } else return false;
     }
     
     private boolean verifyPassword(String passwordParams) {
-        //Verify all strings, string length max: 60
+        //Verify all strings, string length max: 60 
         return true;
     }
 }
