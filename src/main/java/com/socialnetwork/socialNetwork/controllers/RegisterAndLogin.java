@@ -5,14 +5,13 @@
  */
 package com.socialnetwork.socialNetwork.controllers;
 
-import com.socialnetwork.socialNetwork.utils.UsersSession;
+import com.socialnetwork.socialNetwork.session.UsersSession;
 import com.socialnetwork.socialNetwork.SocialNetworkConfiguration;
 import com.socialnetwork.socialNetwork.models.Users;
 import com.socialnetwork.socialNetwork.repository.UsersRepository;
+import com.socialnetwork.socialNetwork.session.SessionInformation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.SQLWarningException;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -137,9 +136,18 @@ public class RegisterAndLogin {
     
     class ReturnInformationLogin {
         
+        private String user;
         private boolean success;
         private String message;
         private String token;
+        
+        public String getUser() {
+            return this.user;
+        }
+        
+        public void setUser(String userParams) {
+            this.user = userParams;
+        }
         
         public boolean getSuccess() {
             return this.success;
@@ -171,13 +179,14 @@ public class RegisterAndLogin {
         ReturnInformationLogin returnInformation = new ReturnInformationLogin();
         try {
             if(verifyName(information.getUser()) && verifyPassword(information.getPassword())) {
-                System.out.println("pesquisando user: "+information.getUser());
                 Users userResult = repo.findByUser(information.getUser());
                 if(userResult != null) { //user exists
                     if(userResult.getPassword().equals(information.getPassword())) {
+                        SessionInformation sessionInformation = UsersSession.newSession(userResult);
+                        returnInformation.setUser(userResult.getUser());
                         returnInformation.setMessage("Logado com sucesso!");
                         returnInformation.setSuccess(true);
-                        returnInformation.setToken(UsersSession.newSession(userResult));
+                        returnInformation.setToken(sessionInformation.getTokenSession());
                     } else {
                         returnInformation.setMessage("Verifique as informações!1");
                         returnInformation.setSuccess(false);

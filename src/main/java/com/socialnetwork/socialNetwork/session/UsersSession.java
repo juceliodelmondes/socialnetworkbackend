@@ -1,5 +1,6 @@
-package com.socialnetwork.socialNetwork.utils;
+package com.socialnetwork.socialNetwork.session;
 
+import com.socialnetwork.socialNetwork.session.SessionInformation;
 import com.socialnetwork.socialNetwork.models.Users;
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,37 +11,7 @@ public class UsersSession {
     private static final int tokenLength = 1024;
     private static final int tokenSessionLength = 255;
     private static final ArrayList<SessionInformation> userSession = new ArrayList<>();    
-    
-    static class SessionInformation { 
-        private String user, password, tokenSession;
         
-        private String getUser() {
-            return this.user;
-        }
-        
-        private void setUser(String userParams) {
-            this.user = userParams;
-        }
-        
-        private String getPassword() {
-            return this.password;
-        }
-        
-        private void setPassword(String passwordParams) {
-            this.password = passwordParams;
-        }
-        
-        private String getTokenSession() {
-            return this.tokenSession;
-        }
-        
-        private void setTokenSession(String tokenSessionParams) {
-            this.tokenSession = tokenSessionParams;
-        }
-        
-        
-    }
-    
     public UsersSession() {
         
     }
@@ -63,22 +34,34 @@ public class UsersSession {
         return finalToken;
     }
     
-    public static String newSession(Users user) {
+    public static SessionInformation newSession(Users user) {
         SessionInformation sessionInformation = new SessionInformation();
-        sessionInformation.setUser(user.getUser());
-        sessionInformation.setPassword(user.getPassword());
         String tokenSession = generateTokenSession();
+        
+        sessionInformation.setUser(user.getUser());
         sessionInformation.setTokenSession(tokenSession);
         userSession.add(sessionInformation);
         System.out.println("New session: "+sessionInformation.getUser()+" token: "+tokenSession);
-        return sessionInformation.getTokenSession();
+        return sessionInformation;
     }
     
-    public static boolean validateSession(Users user, String tokenSession) {
+    public static boolean validateSession(SessionInformation information) {
+        //validate user session with username and token
         for(int i = 0; i < userSession.size(); i++) {
-            if(userSession.get(i).getTokenSession().equals(tokenSession) && 
-                    userSession.get(i).getUser().equals(user.getUser()) &&
-                    userSession.get(i).getPassword().equals(user.getPassword())) return true; 
+            if(userSession.get(i).getTokenSession().equals(information.getTokenSession()) && 
+                    userSession.get(i).getUser().equals(information.getUser())) return true; 
+        }
+        return false;
+    }
+    
+    public static boolean invalidateSession(SessionInformation information) {
+        for(int i = 0; i < userSession.size(); i++) {
+            if(userSession.get(i).getTokenSession().equals(information.getTokenSession()) && 
+                    userSession.get(i).getUser().equals(information.getUser())) {
+                userSession.remove(i);
+                System.out.println("Closed session: "+information.getUser()+" token: "+information.getTokenSession());
+                return true;
+            }
         }
         return false;
     }
@@ -93,15 +76,21 @@ public class UsersSession {
         return false;
     }
     
-    public static void closeAllSession(Users user) {
+    public static void closeAllUserSession(Users user) {
         for(int i = 0; i < userSession.size(); i++) {
             if(userSession.get(i).getUser().equals(user.getUser())) userSession.remove(i);
         }
     }
     
+    public static void closeAllSession() {
+        for(int i = 0; i < userSession.size(); i++) userSession.remove(i);
+    }
+    
     public static void printAllSession() {
+        System.out.println("===================");
         for(int i = 0; i < userSession.size(); i++) {
             System.out.println("User session "+userSession.get(i).getUser()+" token: "+userSession.get(i).getTokenSession());
         }
+        System.out.println("===================");
     }
 }
