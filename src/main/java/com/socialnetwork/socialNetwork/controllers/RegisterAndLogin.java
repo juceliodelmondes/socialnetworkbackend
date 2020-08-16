@@ -5,6 +5,7 @@
  */
 package com.socialnetwork.socialNetwork.controllers;
 
+import com.socialnetwork.socialNetwork.utils.UsersSession;
 import com.socialnetwork.socialNetwork.SocialNetworkConfiguration;
 import com.socialnetwork.socialNetwork.models.Users;
 import com.socialnetwork.socialNetwork.repository.UsersRepository;
@@ -26,10 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegisterAndLogin {
     @Autowired
     UsersRepository repo;
-    
-    private char charAllowedUserName[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-        'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
-        '8', '9'};
     
     static class RegisterInformation {
         private String user, password;
@@ -91,8 +88,9 @@ public class RegisterAndLogin {
                     //If user not exists
                     if(verifyPassword(information.getPassword())) {
                         Users newUser = new Users();
-                        newUser.setUser(information.getUser());
+                        newUser.setUser(information.getUser().toLowerCase());
                         newUser.setPassword(information.getPassword());
+                        newUser.setToken(UsersSession.generateToken());
                         long result = repo.save(newUser).getId();
                         if(result > 0) {
                             returnInformation.setMessage("Cadastrado com sucesso!");
@@ -114,6 +112,86 @@ public class RegisterAndLogin {
             returnInformation.setMessage("Erro ao cadastrar!");
             returnInformation.setSuccess(false);
         }
+        return returnInformation;
+    }
+    
+    static class LoginInformation {
+        private String user, password;
+        
+        public String getUser() {
+            return this.user;
+        }
+        
+        public void setUser(String userParams) {
+            this.user = userParams;
+        }
+        
+        public String getPassword() {
+            return this.password;
+        }
+        
+        public void setPassword(String passwordParams) {
+            this.password = passwordParams;
+        }
+    }
+    
+    class ReturnInformationLogin {
+        
+        private boolean success;
+        private String message;
+        private String token;
+        
+        public boolean getSuccess() {
+            return this.success;
+        }
+        
+        public void setSuccess(boolean successParams) {
+            this.success = successParams;
+        }
+        
+        public String getMessage() {
+            return this.message;
+        }
+        
+        public void setMessage(String messageParams) {
+            this.message = messageParams;
+        }
+        
+        public String getToken() {
+            return this.token;
+        }
+        
+        public void setToken(String tokenParams) {
+            this.token = tokenParams;
+        }
+    }
+    
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ReturnInformationLogin login(@RequestBody LoginInformation information) {
+        ReturnInformationLogin returnInformation = new ReturnInformationLogin();
+        try {
+            if(verifyName(information.getUser()) && verifyPassword(information.getPassword())) {
+                Users userResult = repo.findByUser(information.getUser());
+                if(userResult != null) { //user exists
+                    if(userResult.getPassword().equals(information.getPassword())) {
+                        returnInformation.setMessage("Logado com sucesso!");
+                        returnInformation.setSuccess(true);
+                    } else {
+                        returnInformation.setMessage("Verifique as informações!");
+                        returnInformation.setSuccess(false);
+                    }
+                } else {
+                    returnInformation.setMessage("Verifique as informações!");
+                    returnInformation.setSuccess(false);
+                }
+            } else {
+                returnInformation.setMessage("Verifique as informações!");
+                returnInformation.setSuccess(false);
+            }
+        } catch(Exception er) {
+            returnInformation.setMessage("Verifique as informações!");
+            returnInformation.setSuccess(false);
+        } 
         return returnInformation;
     }
     

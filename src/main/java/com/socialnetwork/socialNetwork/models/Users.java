@@ -22,6 +22,7 @@ public class Users implements Serializable {
     @Column(unique = true)
     private String user;
     private String password;
+    @Column(length = 1024)
     private String token;
     
     public long getId() {

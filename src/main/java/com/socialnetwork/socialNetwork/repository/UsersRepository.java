@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author Jucelio
  */
 public interface UsersRepository extends CrudRepository<Users, Long>{
-    public Users findByUser(String nameParams);
+    public Users findByUser(String userParams);
 }
