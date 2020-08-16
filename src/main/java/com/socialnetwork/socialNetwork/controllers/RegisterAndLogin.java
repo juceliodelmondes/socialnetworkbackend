@@ -82,23 +82,27 @@ public class RegisterAndLogin {
     public ReturnInformation register(@RequestBody RegisterInformation information) {
         ReturnInformation returnInformation = new ReturnInformation();
         try {
-            if(verifyName(information.getUser())) { //trocar por um filtro
-                boolean userExists = userExists(information.getUser());
-                if(userExists) {
+            if(verifyName(information.getUser())) {
+                if(userExists(information.getUser())) {
                     //If user exists
                     returnInformation.setMessage("Usuário indisponível!");
                     returnInformation.setSuccess(false);
                 } else {
-                    //If user not exists    
-                    Users newUser = new Users();
-                    newUser.setUser(information.getUser());
-                    newUser.setPassword(information.getPassword());
-                    long result = repo.save(newUser).getId();
-                    if(result > 0) {
-                        returnInformation.setMessage("Cadastrado com sucesso!");
-                        returnInformation.setSuccess(true);
+                    //If user not exists
+                    if(verifyPassword(information.getPassword())) {
+                        Users newUser = new Users();
+                        newUser.setUser(information.getUser());
+                        newUser.setPassword(information.getPassword());
+                        long result = repo.save(newUser).getId();
+                        if(result > 0) {
+                            returnInformation.setMessage("Cadastrado com sucesso!");
+                            returnInformation.setSuccess(true);
+                        } else {
+                            returnInformation.setMessage("Erro ao cadastrar!");
+                            returnInformation.setSuccess(false);
+                        }
                     } else {
-                        returnInformation.setMessage("Erro ao cadastrar!");
+                        returnInformation.setMessage("Verifique a senha");
                         returnInformation.setSuccess(false);
                     }
                 }
@@ -137,6 +141,7 @@ public class RegisterAndLogin {
     
     private boolean verifyPassword(String passwordParams) {
         //Verify all strings, string length max: 60 
-        return true;
+        if(!passwordParams.isEmpty() && passwordParams.length() >= SocialNetworkConfiguration.minPassword && passwordParams.length() <= SocialNetworkConfiguration.maxPassword) return true;
+        else return false;
     }
 }

@@ -11,6 +11,8 @@ package com.socialnetwork.socialNetwork;
  */
 public class SocialNetworkConfiguration {
     public static final String charAllowed = "abcdefghijklmnopqrstuvwxyz0123456789";
-    public static final int minUserName = 5; //min char
-    public static final int maxUserName = 60; //max maxUserName
+    public static final int minUserName = 5;
+    public static final int maxUserName = 60;
+    public static final int minPassword = 10; 
+    public static final int maxPassword = 60;
 }
