@@ -8,6 +8,7 @@ package com.socialnetwork.socialNetwork.controllers;
 import com.socialnetwork.socialNetwork.requestObject.LoginRequestObject;
 import com.socialnetwork.socialNetwork.responseObject.LoginResponseObject;
 import com.socialnetwork.socialNetwork.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class LoginController {
     
+    @Autowired
+    LoginService service;
+    
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponseObject login(@RequestBody LoginRequestObject information) {
-        return LoginService.login(information);
+        return service.login(information);
     }
 }

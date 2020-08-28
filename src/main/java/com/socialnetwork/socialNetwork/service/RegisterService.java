@@ -10,7 +10,7 @@ import com.socialnetwork.socialNetwork.models.Users;
 import com.socialnetwork.socialNetwork.repository.UsersRepository;
 import com.socialnetwork.socialNetwork.requestObject.RegisterRequestObject;
 import com.socialnetwork.socialNetwork.responseObject.RegisterResponseObject;
-import com.socialnetwork.socialNetwork.session.UsersSession;
+import com.socialnetwork.socialNetwork.session.SessionInformation;
 import com.socialnetwork.socialNetwork.utils.UsersUtils;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,27 +25,26 @@ import org.springframework.stereotype.Service;
 public class RegisterService {
     
     @Autowired
-    UsersRepository repo;    
+    UsersRepository repo;   
+    
+    @Autowired
+    SessionService sessionService;
     
     public RegisterResponseObject register(RegisterRequestObject information) {
         RegisterResponseObject returnInformation = new RegisterResponseObject();
         try {
-            System.out.println("ok1");
             if(UsersUtils.verifyName(information.getUser())) {
-                System.out.println("ok2 "+information.getUser());
                 if(userExists(information.getUser())) {
-                    System.out.println("ok3");
                     //If user exists
                     returnInformation.setMessage("Usuário indisponível!");
                     returnInformation.setSuccess(false);
                 } else {
-                    System.out.println("ok4");
                     //If user not exists
                     if(UsersUtils.verifyPassword(information.getPassword())) {
                         Users newUser = new Users();
                         newUser.setUser(information.getUser().toLowerCase());
                         newUser.setPassword(information.getPassword());
-                        newUser.setToken(UsersSession.generateToken());
+                        newUser.setToken(sessionService.generateToken());
                         long result = repo.save(newUser).getId();
                         if(result > 0) {
                             returnInformation.setMessage("Cadastrado com sucesso!");

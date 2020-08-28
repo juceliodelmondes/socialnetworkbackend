@@ -31,7 +31,7 @@ public class SocialNetworkApplication {
                 }
             }
         }.start();
-        /*
+        
         for(int i = 0; i < 1000; i++) {
             try {
                 Thread.sleep(2000);
