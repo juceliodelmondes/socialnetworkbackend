@@ -28,6 +28,7 @@ public class RegisterAndLogin {
     UsersRepository repo;
     
     static class RegisterInformation {
+        //A information class of register
         private String user, password;
         
         public String getUser() {
@@ -48,7 +49,7 @@ public class RegisterAndLogin {
     }
     
     class ReturnInformation {
-        //An class of return information to user
+        //A class of return information to user
         
         public ReturnInformation() {
             
@@ -72,7 +73,7 @@ public class RegisterAndLogin {
         public void setMessage(String messageParams) {
             this.message = messageParams;
         }
-    }
+    }            
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ReturnInformation register(@RequestBody RegisterInformation information) {
@@ -188,19 +189,19 @@ public class RegisterAndLogin {
                         returnInformation.setSuccess(true);
                         returnInformation.setToken(sessionInformation.getTokenSession());
                     } else {
-                        returnInformation.setMessage("Verifique as informações!1");
+                        returnInformation.setMessage("Verifique as informações!");
                         returnInformation.setSuccess(false);
                     }
                 } else {
-                    returnInformation.setMessage("Verifique as informações!2");
+                    returnInformation.setMessage("Verifique as informações!");
                     returnInformation.setSuccess(false);
                 }
             } else {
-                returnInformation.setMessage("Verifique as informações!3");
+                returnInformation.setMessage("Verifique as informações!");
                 returnInformation.setSuccess(false);
             }
         } catch(Exception er) {
-            returnInformation.setMessage("Verifique as informações!4");
+            returnInformation.setMessage("Verifique as informações!");
             returnInformation.setSuccess(false);
         } 
         return returnInformation;

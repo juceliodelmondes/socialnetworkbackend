@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin //allow cors
 @RestController
 @RequestMapping(value = "/session")
-public class UserSession {
+public class UserSessionController {
     
     @RequestMapping(value = "/validate")
     public boolean validate(@RequestBody SessionInformation information) {
+        System.out.println("VALIDANDO: "+information.getUser());
         return UsersSession.validateSession(information);
     }
     

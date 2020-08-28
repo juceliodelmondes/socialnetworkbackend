@@ -36,8 +36,7 @@ public class UsersSession {
     
     public static SessionInformation newSession(Users user) {
         SessionInformation sessionInformation = new SessionInformation();
-        String tokenSession = generateTokenSession();
-        
+        String tokenSession = generateTokenSession();        
         sessionInformation.setUser(user.getUser());
         sessionInformation.setTokenSession(tokenSession);
         userSession.add(sessionInformation);
