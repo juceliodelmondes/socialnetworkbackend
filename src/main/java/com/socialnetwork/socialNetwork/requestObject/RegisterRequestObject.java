@@ -12,4 +12,21 @@ package com.socialnetwork.socialNetwork.requestObject;
  */
 public class RegisterRequestObject {
     
+    private String user, password;
+
+    public String getUser() {
+        return this.user;
+    }
+
+    public void setUser(String userParams) {
+        this.user = userParams;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String passwordParams) {
+        this.password = passwordParams;
+    }
 }

@@ -10,6 +10,7 @@ import com.socialnetwork.socialNetwork.requestObject.RegisterRequestObject;
 import com.socialnetwork.socialNetwork.responseObject.RegisterResponseObject;
 import com.socialnetwork.socialNetwork.service.RegisterService;
 import com.socialnetwork.socialNetwork.session.UsersSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class RegisterController {
     
+    @Autowired
+    RegisterService service;
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public RegisterResponseObject register (@RequestBody RegisterRequestObject information) {
-        return RegisterService.register(information);
+        return service.register(information);
     }
 }

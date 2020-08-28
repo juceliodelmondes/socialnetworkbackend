@@ -1,5 +1,6 @@
 package com.socialnetwork.socialNetwork.models;
 
+import com.socialnetwork.socialNetwork.SocialNetworkConfiguration;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,9 @@ public class Users implements Serializable {
     @Id
     @GeneratedValue
     private long id;
-    @Column(unique = true)
+    @Column(unique = true, length = SocialNetworkConfiguration.maxUserName)
     private String user;
+    @Column(length = SocialNetworkConfiguration.maxPassword)
     private String password;
     @Column(length = 1024)
     private String token;

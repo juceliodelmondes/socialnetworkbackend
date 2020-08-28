@@ -11,5 +11,23 @@ package com.socialnetwork.socialNetwork.responseObject;
  * A class of information of register
  */
 public class RegisterResponseObject {
-    
+        
+    private boolean success;
+    private String message;
+
+    public boolean getSuccess() {
+        return this.success;
+    }
+
+    public void setSuccess(boolean successParams) {
+        this.success = successParams;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setMessage(String messageParams) {
+        this.message = messageParams;
+    }
 }
