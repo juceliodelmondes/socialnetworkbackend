@@ -5,14 +5,11 @@
  */
 package com.socialnetwork.socialNetwork.service;
 
-import com.socialnetwork.socialNetwork.controllers.RegisterAndLogin;
 import com.socialnetwork.socialNetwork.models.Users;
 import com.socialnetwork.socialNetwork.repository.UsersRepository;
 import com.socialnetwork.socialNetwork.requestObject.RegisterRequestObject;
 import com.socialnetwork.socialNetwork.responseObject.RegisterResponseObject;
-import com.socialnetwork.socialNetwork.session.SessionInformation;
 import com.socialnetwork.socialNetwork.utils.UsersUtils;
-import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

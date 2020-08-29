@@ -31,7 +31,7 @@ public class UsersUtils {
     }
     
     public static boolean verifyPassword(String passwordParams) {
-        //Verify all strings, string length max: 60 
+        //Verify all strings, string max length: 60 
         if(!passwordParams.isEmpty() && passwordParams.length() >= SocialNetworkConfiguration.minPassword && passwordParams.length() <= SocialNetworkConfiguration.maxPassword) return true;
         else return false;
     }

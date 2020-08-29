@@ -5,7 +5,6 @@
  */
 package com.socialnetwork.socialNetwork.service;
 
-import com.socialnetwork.socialNetwork.controllers.RegisterAndLogin;
 import com.socialnetwork.socialNetwork.models.Users;
 import com.socialnetwork.socialNetwork.repository.UsersRepository;
 import com.socialnetwork.socialNetwork.requestObject.LoginRequestObject;
@@ -31,6 +30,8 @@ public class LoginService {
     
     public LoginResponseObject login(LoginRequestObject information) {
         LoginResponseObject returnInformation = new LoginResponseObject();
+        returnInformation.setMessage("Verifique as informações!"); //default information
+        returnInformation.setSuccess(false); //default information
         try {
             if(UsersUtils.verifyName(information.getUser()) && UsersUtils.verifyPassword(information.getPassword())) {
                 Users userResult = repo.findByUser(information.getUser());
@@ -41,22 +42,10 @@ public class LoginService {
                         returnInformation.setMessage("Logado com sucesso!");
                         returnInformation.setSuccess(true);
                         returnInformation.setToken(sessionInformation.getTokenSession());
-                    } else {
-                        returnInformation.setMessage("Verifique as informações!");
-                        returnInformation.setSuccess(false);
                     }
-                } else {
-                    returnInformation.setMessage("Verifique as informações!");
-                    returnInformation.setSuccess(false);
-                }
-            } else {
-                returnInformation.setMessage("Verifique as informações!");
-                returnInformation.setSuccess(false);
+                } 
             }
-        } catch(Exception er) {
-            returnInformation.setMessage("Verifique as informações!");
-            returnInformation.setSuccess(false);
-        }
+        } catch(Exception er) {}
         return returnInformation;
     }
 }
