@@ -6,7 +6,7 @@
 package com.socialnetwork.socialNetwork.responseObject;
 
 /**
- *
+ * Padrão de resposta ao realizar o login 
  * @author Jucelio
  */
 public class LoginResponseObject {

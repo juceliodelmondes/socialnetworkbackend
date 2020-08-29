@@ -20,20 +20,23 @@ public class SessionController {
     @Autowired
     SessionService service;
     
+    /**
+     * Verifica e retorna se uma sessão é valida
+     * @param information
+     * @return 
+     */
     @RequestMapping(value = "/validate")
     public boolean validate(@RequestBody SessionInformation information) {
         System.out.println("Validando usuário: "+information.getUser());
         return service.validateSession(information);
     }
     
-    @RequestMapping(value = "/invalidate")
-    public boolean invalidate(@RequestBody SessionInformation information) {
-        return service.invalidateSession(information);
-    }
-    
+    /**
+     * Imprime no console todas as sessões ativas
+     */
     @RequestMapping(value = "/show")
     public void show() {
-        //Debug
         service.printAllSession();
     }
+    
 }

@@ -6,7 +6,7 @@
 package com.socialnetwork.socialNetwork.requestObject;
 
 /**
- *
+ * Modelo de informações para requisição de Login
  * @author Jucelio
  */
 public class LoginRequestObject {

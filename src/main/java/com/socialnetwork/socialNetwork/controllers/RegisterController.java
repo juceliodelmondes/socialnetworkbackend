@@ -28,6 +28,11 @@ public class RegisterController {
     @Autowired
     RegisterService service;
     
+    /**
+     * Registra um novo usuário
+     * @param information
+     * @return 
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public RegisterResponseObject register (@RequestBody RegisterRequestObject information) {
         return service.register(information);

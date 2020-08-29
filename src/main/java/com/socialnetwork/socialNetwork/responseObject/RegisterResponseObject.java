@@ -6,9 +6,8 @@
 package com.socialnetwork.socialNetwork.responseObject;
 
 /**
- *
+ * Padrão de resposta para o cliente ao registrar no sistema
  * @author Jucelio
- * A class of information of register
  */
 public class RegisterResponseObject {
         

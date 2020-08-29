@@ -1,6 +1,7 @@
 package com.socialnetwork.socialNetwork.service;
 
 import com.socialnetwork.socialNetwork.models.Users;
+import com.socialnetwork.socialNetwork.requestObject.LogoffRequestObject;
 import com.socialnetwork.socialNetwork.session.SessionInformation;
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,6 +19,10 @@ public class SessionService {
         
     }
     
+    /**
+     * Gera um token
+     * @return retorna o token gerado
+     */
     public String generateToken() {
         String finalToken = "";
         Random random = new Random();
@@ -27,27 +32,26 @@ public class SessionService {
         return finalToken;
     }
     
-    private String generateTokenSession() {
-        String finalToken = "";
-        Random random = new Random();
-        for(int i = 0; i < tokenSessionLength; i++) {
-            finalToken += charAllowedToken.charAt(random.nextInt(charAllowedToken.length()));
-        }
-        return finalToken;
-    }
-    
+    /**
+     * Inicializa uma nova sessão
+     * @param user
+     * @return 
+     */
     public SessionInformation newSession(Users user) {
         SessionInformation sessionInformation = new SessionInformation();
-        String tokenSession = generateTokenSession();        
+        String tokenSession = generateToken();        
         sessionInformation.setUser(user.getUser());
         sessionInformation.setTokenSession(tokenSession);
         userSession.add(sessionInformation);
         System.out.println("New session: "+sessionInformation.getUser()+" token: "+tokenSession);
         return sessionInformation;
     }
-    
+    /**
+     * Verifica se uma sessão é válida
+     * @param information
+     * @return 
+     */
     public boolean validateSession(SessionInformation information) {
-        //validate user session with username and token
         for(int i = 0; i < userSession.size(); i++) {
             if(userSession.get(i).getTokenSession().equals(information.getTokenSession()) && 
                     userSession.get(i).getUser().equals(information.getUser())) return true; 
@@ -55,38 +59,47 @@ public class SessionService {
         return false;
     }
     
-    public boolean invalidateSession(SessionInformation information) {
-        for(int i = 0; i < userSession.size(); i++) {
-            if(userSession.get(i).getTokenSession().equals(information.getTokenSession()) && 
-                    userSession.get(i).getUser().equals(information.getUser())) {
-                userSession.remove(i);
-                System.out.println("Closed session: "+information.getUser()+" token: "+information.getTokenSession());
-                return true;
-            }
-        }
-        return false;
+    /**
+     * Fecha uma determina sessão, identificada com o usuário e token
+     * @param information
+     * @return 
+     */
+    
+    public boolean closeSession(LogoffRequestObject information) {
+        return userSession.removeIf(userSession -> userSession.getUser().equals(information.getUser()) && 
+                userSession.getTokenSession().equals(information.getToken()));
     }
     
-    public boolean closeSession(String tokenSession) {
-        for(int i = 0; i < userSession.size(); i++) {
-            if(userSession.get(i).getTokenSession().equals(tokenSession)) {
-                userSession.remove(i);
-                return true;
-            }
-        }
-        return false;
+    /**
+     * Encerra uma determina sessão, identificada com o usuário e token
+     * @param user
+     * @return 
+     */
+    public boolean closeSession(Users user) {
+        return userSession.removeIf(userSession -> userSession.getUser().equals(user.getUser()) && 
+                userSession.getTokenSession().equals(user.getToken()));
     }
     
+    /**
+     * Encerra todas as sessões de um determinado usuário
+     * @param user 
+     */
     public void closeAllUserSession(Users user) {
-        for(int i = 0; i < userSession.size(); i++) {
-            if(userSession.get(i).getUser().equals(user.getUser())) userSession.remove(i);
-        }
+        userSession.removeIf(userSession -> userSession.getUser().equals(user.getUser()) && 
+                userSession.getTokenSession().equals(user.getToken()));
     }
     
-    public void closeAllSession() {
-        for(int i = 0; i < userSession.size(); i++) userSession.remove(i);
+    /**
+     * Encerra todas as sessões disponíveis
+     */
+    
+    public void closeAllSessions() {
+        userSession.clear();
     }
     
+    /**
+     * Imprime todas as sessões disponíveis
+     */
     public void printAllSession() {
         System.out.println("===================");
         for(int i = 0; i < userSession.size(); i++) {

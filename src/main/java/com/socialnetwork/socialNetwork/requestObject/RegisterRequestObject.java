@@ -6,9 +6,8 @@
 package com.socialnetwork.socialNetwork.requestObject;
 
 /**
- *
+ * Modelo de informações na requisição do registro
  * @author Jucelio
- * A class of information of register
  */
 public class RegisterRequestObject {
     

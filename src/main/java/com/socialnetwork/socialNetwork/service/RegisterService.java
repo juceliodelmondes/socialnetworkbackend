@@ -27,6 +27,11 @@ public class RegisterService {
     @Autowired
     SessionService sessionService;
     
+    /**
+     * Regra de negócio para o registro
+     * @param information
+     * @return 
+     */
     public RegisterResponseObject register(RegisterRequestObject information) {
         RegisterResponseObject returnInformation = new RegisterResponseObject();
         try {
@@ -47,7 +52,7 @@ public class RegisterService {
                             returnInformation.setMessage("Cadastrado com sucesso!");
                             returnInformation.setSuccess(true);
                         } else {
-                            returnInformation.setMessage("Erro ao cadastrar!1");
+                            returnInformation.setMessage("Erro ao cadastrar!");
                             returnInformation.setSuccess(false);
                         }
                     } else {
@@ -60,7 +65,7 @@ public class RegisterService {
                 returnInformation.setSuccess(false);
             }
         } catch(Exception er) {
-            returnInformation.setMessage("Erro ao cadastrar!2");
+            returnInformation.setMessage("Erro ao cadastrar!");
             returnInformation.setSuccess(false);
         }
         return returnInformation;

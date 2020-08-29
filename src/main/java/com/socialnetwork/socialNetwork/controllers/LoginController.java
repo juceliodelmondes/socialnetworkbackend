@@ -6,6 +6,7 @@
 package com.socialnetwork.socialNetwork.controllers;
 
 import com.socialnetwork.socialNetwork.requestObject.LoginRequestObject;
+import com.socialnetwork.socialNetwork.requestObject.LogoffRequestObject;
 import com.socialnetwork.socialNetwork.responseObject.LoginResponseObject;
 import com.socialnetwork.socialNetwork.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,23 @@ public class LoginController {
     @Autowired
     LoginService service;
     
+    /**
+     * Inicializa o login chamando a camada de service
+     * @param information 
+     * @return 
+     */
+    
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponseObject login(@RequestBody LoginRequestObject information) {
         return service.login(information);
+    }
+    
+    /**
+     * Encerra uma sessão válida
+     * @param information 
+     */
+    @RequestMapping(value = "/logoff", method = RequestMethod.POST)
+    public void logoff(@RequestBody LogoffRequestObject information) {
+        service.logoff(information);
     }
 }

@@ -8,6 +8,7 @@ package com.socialnetwork.socialNetwork.service;
 import com.socialnetwork.socialNetwork.models.Users;
 import com.socialnetwork.socialNetwork.repository.UsersRepository;
 import com.socialnetwork.socialNetwork.requestObject.LoginRequestObject;
+import com.socialnetwork.socialNetwork.requestObject.LogoffRequestObject;
 import com.socialnetwork.socialNetwork.responseObject.LoginResponseObject;
 import com.socialnetwork.socialNetwork.session.SessionInformation;
 import com.socialnetwork.socialNetwork.utils.UsersUtils;
@@ -28,6 +29,12 @@ public class LoginService {
     @Autowired
     SessionService sessionService;
     
+    /**
+     * Regra de negócio para o login
+     * Inicializa nova sessão caso os dados estejam corretos
+     * @param information
+     * @return 
+     */
     public LoginResponseObject login(LoginRequestObject information) {
         LoginResponseObject returnInformation = new LoginResponseObject();
         returnInformation.setMessage("Verifique as informações!"); //default information
@@ -47,5 +54,14 @@ public class LoginService {
             }
         } catch(Exception er) {}
         return returnInformation;
+    }
+    
+    /**
+     * Regra de negócio para o logoff
+     * @param information
+     * @return 
+     */
+    public boolean logoff (LogoffRequestObject information) {
+        return sessionService.closeSession(information);
     }
 }

@@ -6,7 +6,7 @@
 package com.socialnetwork.socialNetwork;
 
 /**
- *
+ * Classe de configuração geral
  * @author Jucelio
  */
 public class SocialNetworkConfiguration {

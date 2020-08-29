@@ -9,7 +9,7 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 /**
- *
+ * Classe de configuração do banco
  * @author Jucelio
  */
 
