@@ -12,7 +12,6 @@ public class SessionService {
     //This class validate all users session with token generated in Java
     private static final String charAllowedToken = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int tokenLength = 1024;
-    private static final int tokenSessionLength = 255;
     private static final ArrayList<SessionInformation> userSession = new ArrayList<>();    
         
     public SessionService() {
@@ -101,10 +100,8 @@ public class SessionService {
      * Imprime todas as sessões disponíveis
      */
     public void printAllSession() {
-        System.out.println("===================");
-        for(int i = 0; i < userSession.size(); i++) {
-            System.out.println("User session "+userSession.get(i).getUser()+" token: "+userSession.get(i).getTokenSession());
-        }
-        System.out.println("===================");
+        userSession.forEach(userSession -> {
+            System.out.println("User session "+userSession.getUser()+" token: "+userSession.getTokenSession());
+        });
     }
 }
